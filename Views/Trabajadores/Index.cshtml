@@ -1,0 +1,148 @@
+﻿@model IEnumerable<PruebaDesarrolloSoftware.Models.Trabajadore>
+
+@{
+    ViewData["Title"] = "Index";
+    var antiForgeryToken = @Html.AntiForgeryToken();
+
+}
+<style>
+
+    .text-bg-primary{
+        background-color: #0D6EFD;
+        color:white;
+    }
+
+    .text-bg-warning {
+        background-color: #F08821;
+        color: white;
+    }
+</style>
+<h1>Index</h1>
+
+<p>
+    <button type="button" id="btnModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlRegistro">
+       Crear trabajador
+    </button>
+    @using (Html.BeginForm())
+    {
+    <p>
+        Sexo: @Html.TextBox("sexo")
+        <input type="submit" value="Search" />
+    </p>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexo)
+            </th>
+            <th>
+               Departamento
+            </th>
+            <th>
+               Distrito
+            </th>
+            <th>
+               Provincia
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombres)
+            </td>
+            <td>
+
+                    @if(item.Sexo=="M"){
+                        <div class="badge text-bg-primary p-3">@Html.DisplayFor(modelItem => item.Sexo)</div>
+                    }else if(item.Sexo=="F"){
+                        <div class="text-bg-warning  p-3">@Html.DisplayFor(modelItem => item.Sexo)</div>
+                    }
+          
+                   
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDepartamentoNavigation.NombreDepartamento)
+            </td>
+             <td>
+                    @Html.DisplayFor(modelItem => item.IdProvinciaNavigation.NombreProvincia)
+             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDistritoNavigation.NombreDistrito)
+            </td>
+            <td>
+                    <a class="btn btn-warning" onclick="obtenerDatos(@item.Id)">Editar</a> |
+                    <a class="btn btn-danger" onclick="eliminar(@item.Id)">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="modal fade" id="mdlRegistro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Registro de trabajador</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Departamento</label>
+                        <select id="cboDepartamento" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Provincia</label>
+                        <select id="cboProvincia" class="form-control"></select> 
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Distrito</label>
+                        <select id="cboDistrito" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">TipoDocumento</label>
+                        <input id="txtTipoDocumento" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">NumeroDocumento</label>
+                        <input id="txtNumeroDocumento" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nombres</label>
+                        <input id="txtNombres" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Sexo</label>
+                        <input id="txtSexo" class="form-control" />
+                    </div>
+                    <input type="hidden" id="flag" />
+                <input type="hidden" id="codigo" />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="brnGrabar" class="btn btn-primary">Grabar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/trabajador.js"></script>
